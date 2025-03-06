@@ -1,0 +1,446 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+img {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+header {
+    background-color: #222;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    align-content: space-around;
+}
+
+#prettylogo {
+    width: 75%;
+    opacity: 0.5;
+    height: 80%;
+    position: absolute;
+    transform: translateX(-50%) translateY(20px);
+}
+
+.prettylogo {
+    height: 120px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.interacts {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: space-between;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 5%;
+    justify-content: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    transition: filter 0.3s ease-in-out;
+}
+
+nav ul li a:hover {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+#products, #home, #about, #contact, #login, #register, #profile, #logout {
+    text-align: center;
+    gap: 15px;
+}
+
+#Checkout {
+    padding: 20px;
+    text-align: center;
+}
+
+#Cart {
+    padding: 20px;
+    text-align: center;
+}
+
+.Dispage {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+}
+
+.product {
+    background: white;
+    padding: 15px;
+    width: 25vw;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    justify-content: space-between;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: transform 0.2s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.product.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.product:hover {
+    transform: scale(1.05);
+}
+
+.product img {
+    width: 100%;
+    height: auto;
+    max-height: 150px;
+    transition: transform 0.2s ease-in-out;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: filter 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #0056b3;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #222; 
+    color: white;
+}
+
+.profile {
+    position: absolute;
+    z-index: 3;
+}
+
+.logbtn {
+    width: 20vh;
+}
+
+.logfrm {
+    height: 25px;
+    border-radius: 20px;
+}
+
+.logbtns {
+    gap: 15px;
+}
+
+.profileIcon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: filter 0.3s ease-in-out;
+}
+
+.profileIcon:hover {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.profileIcon img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Sideshadow styles */
+.sideshadowL,
+.sideshadowR {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0%;
+    background: rgba(0, 0, 0, 0.4);
+    transition: width 0.5s ease-in-out;
+    z-index: -1;
+}
+
+.sideshadowL {
+    left: 0;
+}
+
+.sideshadowR {
+    right: 0;
+}
+
+section {
+    position: relative;
+    padding: 20px;
+    overflow: hidden;
+    min-height: 80vh;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 35%;
+    height: 100%;
+    background-color: #222;
+    z-index: 10;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 20px;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+#sidebarContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.sidebar .profileContainer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.sidebar .profileContainer:hover {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+.sidebar .profileIcon {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+}
+
+.sidebar .usernameContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar .username {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.sidebar .usernameLine {
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    margin-top: 5px;
+}
+
+.formcontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formcontainer img {
+    max-height: 250px;
+    max-width: 250px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+}
+
+tbody{
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    justify-self: right;
+}
+
+tr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+td {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 45%;
+}
+
+.td1 {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.td2 {
+    gap: 10%;
+    align-items: flex-start;
+}
+
+#orderData {
+    width: 50vw;
+}
+
+@media screen and (min-width: 1025px) {
+    .td1 {
+        align-items: flex-end;
+        text-align: right;
+        justify-content: flex-end;
+    }
+
+    .td2 {
+        align-items: flex-start;
+        text-align: left;
+        justify-content: flex-start;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .formcontainer {
+        width: 100%;
+        overflow-y: auto;
+        align-content: center;
+    }
+
+    table {
+        display: flex;
+        flex-direction: column;
+    }
+
+    tr {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    td {
+        width: 100%;
+        align-items: center;
+    }
+
+    label, input, select, textarea {
+        font-size: 1.3em;
+    }
+
+    .td1 {
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .td2 {
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .formcontainer {
+        width: 100%;
+        overflow-y: auto;
+    }
+
+    table {
+        display: flex;
+        flex-direction: column;
+    }
+
+    tr {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    td {
+        width: 100%;
+        align-items: center;
+    }
+
+    label, input, select, textarea {
+        font-size: 1.5em;
+    }
+
+    .products {
+        grid-template-columns: repeat(2, 1fr); /* Change to 2 columns for phones */
+    }
+
+    .td1 {
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .td2 {
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+}

@@ -1,32 +1,231 @@
-<!doctype html>
-<html class="no-js" lang="">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PS5 Accessories Shop</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
-  <link rel="stylesheet" href="assets/css/style.css">
-  <meta name="description" content="">
+    <header class="noselect">
+        <div>PS5 Accessories Shop</div>
+        <div class="interacts">
+            <div id="sidebar" class="sidebar">
+                <div id="sidebarContainer">
+                    
+                </div>
+            </div>
+            <div class="profile logo">
+                <button class="loginPage">Login</button>
+            </div>
+            <div class="prettylogo">
+                <img
+                    id="prettylogo"
+                    src="images/clipart1667427.png"
+                    alt="logo"
+                    draggable="false"
+                >
+            </div>
 
-  <meta property="og:title" content="">
-  <meta property="og:type" content="">
-  <meta property="og:url" content="">
-  <meta property="og:image" content="">
-  <meta property="og:image:alt" content="">
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icon.png">
+    <section id="home">
+        <h2>Welcome to PS5 Accessories Shop</h2>
+        <p>Your one-stop shop for the best PS5 controller accessories.</p>
+    </section>
 
-  <meta name="theme-color" content="#fafafa">
-</head>
+        <section id="products">
+            <h1>Our Products</h1>
+            <div class="Dispage">
+                <ul class="products">
+                
+                </ul>
+            </div>
+        </section>
 
-<body>
+    <section id="about">
+        <h2>About Us</h2>
+        <p>We provide high-quality accessories to enhance your gaming experience.</p>
+    </section>
 
-  <!-- Add your site or application content here -->
-  <p>Hello world! This is HTML5 Boilerplate.</p>
-  <script src="assets/js/app.js"></script>
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Reach out to us for any inquiries or support.</p>
+    </section>
 
-</body>
+    <section id="Cart">
+        <h2>Cart</h2>
+        <p>Review your items before proceeding to checkout.</p>
+        <div id="cart-items"></div>
+        <button class="Checkout">Checkout</button>
+        <button class="Cancel">Cancel</button>
+    </section>
 
-</html>
+    <section id="profile">
+        <h2>Profile</h2>
+        <p>View your account details.</p>
+        <div>
+            <p id="profileUsername"></p>
+            <div id="adminPanelLinkContainer"></div> <!-- Admin Panel Link will be added here -->
+            <button class="logoutBtn">Logout</button>
+        </div>
+    </section>
+
+
+    <section id="Checkout">
+        <h2>Checkout</h2>
+        <p>Proceed with your payment.</p>
+        <div id="paypal-button-container"></div>
+        <button class="Cancel">Cancel</button>
+    </section>
+
+    <section id="login">
+        <h2>Login</h2>
+        <div>
+            <input
+                class="logfrm"
+                type="text"
+                id="username"
+                placeholder="Username"
+            >
+            <input
+                class="logfrm"
+                type="password"
+                id="password"
+                placeholder="Password"
+            >
+        </div>
+        <div class="logbtns">
+            <button class="LOGIN">Login</button>
+            <button class="registerBtn">Register</button>
+            <p id="loginStatus"></p>
+        </div>
+    </section>
+
+    <section id="register">
+        <h2>Register</h2>
+        <div>
+            <input
+                class="regfrm"
+                type="text"
+                id="newUsername"
+                placeholder="Username"
+            >
+            <input
+                class="regfrm"
+                type="password"
+                id="newPassword"
+                placeholder="Password"
+            >
+            <input
+                class="regfrm"
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm Password"
+            >
+        </div>
+        <div class="logbtns">
+            <button class="REGISTER">Register</button>
+            <button class="loginPage">Back</button>
+            <p id="registerStatus"></p>
+        </div>
+    </section>
+
+    <section id="logout">
+        <h2>Logout</h2>
+        <p>Are you sure you want to logout?</p>
+        <div>
+            <button class="LOGOUT">Yes</button>
+            <button class="Cancel">No</button>
+        </div>
+    </section>
+
+    <section id="orderForm">
+        <div class="formcontainer">
+            <img id="selectedProductImage" src="skin.jpg" alt="Selected Product">
+            <form id="orderData" action="Startorder.php" method="post">
+                <table>
+                    <tr>
+                        <td class="td1"><label>Aanhef:</label></td>
+                        <td class="td2">
+                            <input type="radio" name="aanhef" value="Dhr." required> Dhr.
+                            <input type="radio" name="aanhef" value="Mevr." required> Mevr.
+                            <input type="radio" name="aanhef" value="Other." required> Other.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>Voornaam:</label></td>
+                        <td class="td2"><input type="text" name="voornaam" placeholder="Voornaam" required></td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>Tussenvoegsel:</label></td>
+                        <td class="td2"><input type="text" name="tussenvoegsel" placeholder="Tussenvoegsel"></td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>Achternaam:</label></td>
+                        <td class="td2"><input type="text" name="achternaam" placeholder="Achternaam" required></td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>Straatnaam:</label></td>
+                        <td class="td2"><input type="text" name="straatnaam" id="straatnaam" placeholder="Straatnaam" required></td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>Huisnummer:</label></td>
+                        <td class="td2"><input type="number" name="huisnummer" id="huisnummer" placeholder="Nr." required></td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>Postcode:</label></td>
+                        <td class="td2"><input type="text" name="postcode" id="postcode" placeholder="1234AB" required></td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>Land:</label></td>
+                        <td class="td2">
+                            <select name="land" required>
+                                <option value="NL">Nederland</option>
+                                <option value="BE">België</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>E-mailadres:</label></td>
+                        <td class="td2"><input type="email" name="email" required></td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>Telefoonnummer:</label></td>
+                        <td class="td2"><input type="tel" name="telefoon" required></td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>Geboortedatum:</label></td>
+                        <td class="td2"><input type="date" name="geboortedatum" required></td>
+                    </tr>
+                    <tr>
+                        <td class="td1"><label>Algemene voorwaarden:</label></td>
+                        <td class="td2"><input type="checkbox" name="voorwaarden" required> Ik ga akkoord met de algemene voorwaarden</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Verder"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 PS5 Accessories Shop. All rights reserved.</p>
+    </footer>
+
+    <script src="handle.js"></script>
+
+    </body>
+    </html>
