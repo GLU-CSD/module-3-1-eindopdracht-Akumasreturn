@@ -1,15 +1,84 @@
-const baseUrl = window.location.hostname.includes("localhost")
+import Auth from './auth.js';
+import Cart from './cart.js';
+
+const baseUrl = window.location.href.includes("localhost") 
   ? "http://localhost/webshopschool"
-  : "https://u230039.gluwebsite.nl";
+  : window.location.origin;
 
 document.addEventListener("DOMContentLoaded", function () {
   const profileContainer = document.querySelector(".profile");
   const sidebar = document.getElementById("sidebar");
+  const sidebarContainer = document.getElementById("sidebarContainer");
   const header = document.querySelector("header");
-  let profileImage = null;
   let selectedProductImage = "";
+  const cart = new Cart();
 
-  updateLoginUI();
+  // Add modal container after existing declarations
+  const modalContainer = document.createElement('div');
+  modalContainer.id = 'productModal';
+  modalContainer.style.display = 'none';
+  modalContainer.style.position = 'fixed';
+  modalContainer.style.bottom = '0';
+  modalContainer.style.left = '0';
+  modalContainer.style.width = '100%';
+  modalContainer.style.height = '60vh';
+  modalContainer.style.backgroundColor = 'white';
+  modalContainer.style.zIndex = '1000';
+  modalContainer.style.padding = '20px';
+  modalContainer.style.boxSizing = 'border-box';
+  modalContainer.style.boxShadow = '0 -2px 10px rgba(0,0,0,0.2)';
+  modalContainer.style.borderRadius = '20px 20px 0 0';
+  modalContainer.style.transition = 'transform 0.3s ease-out';
+  modalContainer.style.transform = 'translateY(100%)';
+  document.body.appendChild(modalContainer);
+
+  // Add modal functions
+  function showProductModal(product) {
+    // Only show modal on mobile devices
+    if (window.innerWidth > 768) return;
+
+    modalContainer.innerHTML = `
+      <button class="closeModal" style="position:absolute;right:10px;top:10px;font-size:24px;border:none;background:none;color:black;padding:10px;cursor:pointer;">&times;</button>
+      <div style="display:flex;flex-direction:column;height:100%;gap:10px;padding-top:20px;">
+        <img src="${product.image}" alt="${product.name}" style="max-height:35%;object-fit:contain;">
+        <h2 style="margin:0;font-size:1.2em;">${product.name}</h2>
+        <p style="flex-grow:1;overflow-y:auto;margin:0;font-size:0.9em;">${product.description}</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;">
+          <strong style="font-size:1.2em;">$${product.price}</strong>
+          <button class="addToCart" style="padding:8px 16px;">Add to Cart</button>
+        </div>
+      </div>
+    `;
+    
+    modalContainer.style.display = 'block';
+    // Allow animation to start
+    setTimeout(() => {
+      modalContainer.style.transform = 'translateY(0)';
+    }, 10);
+    
+    modalContainer.querySelector('.closeModal').addEventListener('click', hideProductModal);
+    modalContainer.querySelector('.addToCart').addEventListener('click', (e) => {
+      e.stopPropagation();
+      cart.addItem(product);
+    });
+  }
+
+  function hideProductModal() {
+    modalContainer.style.transform = 'translateY(100%)';
+    setTimeout(() => {
+      modalContainer.style.display = 'none';
+    }, 300);
+  }
+
+  // Initialize UI and get profileImage element
+  const profileImage = Auth.updateLoginUI(profileContainer);
+  profileImage.addEventListener("click", function () {
+    if (localStorage.getItem("loggedIn") === "true") {
+      toggleSidebar();
+    } else {
+      showPage("login");
+    }
+  });
 
   // Function to apply sideshadows to selected section
   function applySideShadows(section) {
@@ -64,80 +133,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (selectedSection) {
       selectedSection.style.display = "block";
       applySideShadows(selectedSection);
-    }
 
-    if (pageId === "products") {
-      const productElements = document.querySelectorAll(".product");
-
-      productElements.forEach((productElement, index) => {
-        productElement.classList.remove("visible");
-
-        setTimeout(() => {
-          productElement.classList.add("visible");
-        }, index * 350);
-
-        // Add click event listener to each product card
-        productElement.addEventListener("click", function () {
-          // Store the image of the clicked product
-          selectedProductImage = productElement.querySelector("img").src;
-          // Navigate to orderForm page
-          showPage("orderForm");
-        });
-      });
-    }
-
-    if (pageId === "orderForm") {
-      const orderFormImage = document.querySelector("#orderForm img");
-      if (orderFormImage) {
-        orderFormImage.src = selectedProductImage; // Set the clicked product's image
-      }
-    }
-  }
-
-  function updateLoginUI() {
-    profileContainer.innerHTML = "";
-
-    profileImage = document.createElement("div");
-    profileImage.classList.add("profileIcon");
-    profileImage.style.width = "75px";
-    profileImage.style.height = "75px";
-    profileImage.style.borderRadius = "50%";
-    profileImage.style.border = "none";
-    profileImage.style.cursor = "pointer";
-    profileImage.style.display = "flex";
-    profileImage.style.alignItems = "center";
-    profileImage.style.justifyContent = "center";
-    profileImage.style.fontSize = "32px";
-    profileImage.style.fontWeight = "bold";
-    profileImage.style.color = "#fff";
-    profileImage.style.backgroundColor = "#555";
-    profileImage.innerHTML = `<img src="images/default.png" style="width: 100%; height: 100%; border-radius: 50%;">`;
-
-    profileContainer.appendChild(profileImage);
-
-    profileImage.addEventListener("click", function () {
-      if (localStorage.getItem("loggedIn") === "true") {
-        toggleSidebar();
-      } else {
-        showPage("login");
-      }
-    });
-
-    if (localStorage.getItem("loggedIn") === "true") {
-      let username = localStorage.getItem("username");
-      let role = localStorage.getItem("role");
-
-      // Check if the admin link already exists
-      let adminLink = document.getElementById("adminLink");
-      if (!adminLink) {
-        adminLink = document.createElement("a");
-        adminLink.id = "adminLink";
-        adminLink.href = "admin.html";
-        adminLink.innerText = "Admin Panel";
-        adminLink.style.display = role === "admin" ? "block" : "none"; // Show only for admins
-
-        let profileSection = document.getElementById("profile");
-        profileSection.appendChild(adminLink);
+      if (pageId === "orderForm") {
+        cart.displayOrderForm();
       }
     }
   }
@@ -148,41 +146,38 @@ document.addEventListener("DOMContentLoaded", function () {
     sidebar.classList.toggle("open");
 
     if (sidebar.classList.contains("open")) {
-      sidebarContainer.innerHTML = "";
+      sidebarContainer.innerHTML = `
+            <button class="closeBtn">&times;</button>
+            <div class="profileContainer">
+                <div class="profileIcon profileButton">
+                    <div class="profile-letter">${(localStorage.getItem("username") || "Guest").charAt(0).toUpperCase()}</div>
+                </div>
+                <div class="usernameContainer">
+                    <div class="username">${localStorage.getItem("username") || "Guest"}</div>
+                </div>
+            </div>
+            <hr class="divider">
+            <div id="cartList">
+                <h3>Shopping Cart</h3>
+                <ul id="cartItems"></ul>
+            </div>
+            <button id="orderButton">Order</button>
+        `;
 
-      const profileContainer = document.createElement("div");
-      profileContainer.classList.add("profileContainer");
+      // Add event listeners
+      sidebarContainer.querySelector('.closeBtn').addEventListener('click', closeSidebar);
+      sidebarContainer.querySelector('#orderButton').addEventListener('click', () => {
+        showPage("orderForm");
+        closeSidebar();
+      });
 
-      const profileIcon = document.createElement("div");
-      profileIcon.classList.add("profileIcon", "profileButton");
-
-      let username = localStorage.getItem("username") || "Guest";
-      const firstLetter = username !== "Guest" ? username.charAt(0).toUpperCase() : "?";
-
-      profileIcon.innerHTML = `<div class="profile-letter">${firstLetter}</div>`;
-
-      const usernameContainer = document.createElement("div");
-      usernameContainer.classList.add("usernameContainer");
-
-      const usernameText = document.createElement("div");
-      usernameText.classList.add("username");
-      usernameText.textContent = username;
-
-      const usernameLine = document.createElement("div");
-      usernameLine.classList.add("usernameLine");
-
-      usernameContainer.appendChild(usernameText);
-      usernameContainer.appendChild(usernameLine);
-
-      profileContainer.appendChild(profileIcon);
-      profileContainer.appendChild(usernameContainer);
-
-      sidebarContainer.appendChild(profileContainer);
-
-      profileIcon.addEventListener("click", function () {
+      // Add profile navigation
+      sidebarContainer.querySelector('.profileContainer').addEventListener('click', () => {
         showPage("profile");
         closeSidebar();
       });
+
+      cart.updateCart();
     }
   }
 
@@ -191,125 +186,142 @@ document.addEventListener("DOMContentLoaded", function () {
     sidebarContainer.innerHTML = "";
   }
 
-  async function registerUser() {
-    const username = document.getElementById("newUsername").value;
-    const password = document.getElementById("newPassword").value;
+  async function loadProducts(retries = 3) {
+    const productContainer = document.querySelector(".products");
 
-    const response = await fetch(`${baseUrl}/register.php`, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `username=${username}&password=${password}`,
-    });
-
-    const result = await response.text();
-    document.getElementById("registerStatus").innerText = result;
-  }
-
-  async function loginUser() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    if (!productContainer) {
+      console.error("ERROR: .products container not found in DOM!");
+      return;
+    }
 
     try {
-      const response = await fetch(`${baseUrl}/login.php`, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `username=${username}&password=${password}`,
-      });
-
-      const result = await response.json(); // Expecting a JSON response
-      console.log(result);
-
-      if (result.success) {
-        localStorage.setItem("loggedIn", "true");
-        localStorage.setItem("username", username);
-        localStorage.setItem("role", result.role); // Save role in localStorage
-        updateLoginUI();
-        showPage("profile");
+      const response = await fetch(`${baseUrl}/getProducts.php`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const text = await response.text();
+      let products;
+      try {
+        products = JSON.parse(text);
+      } catch (e) {
+        console.error("Server response:", text);
+        throw new Error("Invalid JSON response from server");
       }
 
-      document.getElementById("loginStatus").innerText = result.message;
+      productContainer.innerHTML = "";
+      
+      if (!Array.isArray(products)) {
+        throw new Error("Expected array of products");
+      }
+
+      products.forEach(product => {
+        const productElement = document.createElement("li");
+        productElement.classList.add("product");
+        productElement.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                <h3 class="product-name">${product.name}</h3>
+                <p class="product-description">${product.description}</p>
+                <p class="product-price"><strong>$${product.price}</strong></p>
+                <button class="addToCart">Add to Cart</button>
+            `;
+            
+        // Add style constraints
+        const description = productElement.querySelector('.product-description');
+        description.style.overflow = 'hidden';
+        description.style.display = '-webkit-box';
+        description.style.webkitLineClamp = '3';
+        description.style.webkitBoxOrient = 'vertical';
+        description.style.width = '100%';
+        description.style.wordWrap = 'break-word';
+        
+        const productName = productElement.querySelector('.product-name');
+        productName.style.overflow = 'hidden';
+        productName.style.width = '100%';
+        productName.style.wordWrap = 'break-word';
+        productName.style.whiteSpace = 'normal'; 
+        productName.style.maxHeight = '2.4em';
+        productName.style.lineHeight = '1.2';
+            
+        const addButton = productElement.querySelector('.addToCart');
+        addButton.addEventListener('click', (e) => {
+          e.stopPropagation();
+          cart.addItem(product);
+        });
+
+        // Add click handler for the entire product card
+        productElement.addEventListener('click', () => showProductModal(product));
+
+        productContainer.appendChild(productElement);
+        
+        setTimeout(() => productElement.classList.add("visible"), 100);
+      });
+
     } catch (error) {
-      console.error("Error logging in:", error);
+      console.error("ERROR loading products:", error);
+      if (retries > 0) {
+        console.log(`Retrying... (${retries} attempts left)`);
+        setTimeout(() => loadProducts(retries - 1), 2000);
+      } else {
+        productContainer.innerHTML = "<p>Failed to load products. Please try again later.</p>";
+      }
     }
   }
 
-  async function logoutUser() {
-    localStorage.setItem("loggedIn", "false");
-    localStorage.removeItem("username");
-    localStorage.removeItem("role");
-    updateLoginUI();
-
-    // Remove the admin link if it exists
-    let adminLink = document.getElementById("adminLink");
-    if (adminLink) {
-      adminLink.remove();
-    }
-  }
-
-  showPage("home");
-  document.addEventListener("click", (event) => {
-    if (event.target.classList.contains("logoutBtn")) {
-      showPage("logout");
-    }
+  // Event Listeners
+  document.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("logoutBtn")) showPage("logout");
     if (event.target.classList.contains("LOGOUT")) {
-      logoutUser();
+      Auth.logoutUser();
+      cart.clear();
       closeSidebar();
       showPage("home");
+      // Refresh the profile UI after logout
+      const newProfileImage = Auth.updateLoginUI(profileContainer);
+      setupProfileImageListener(newProfileImage);
     }
     if (event.target.classList.contains("LOGIN")) {
-      loginUser();
-      showPage("profile");
+      const success = await Auth.loginUser();
+      if (success) {
+        const newProfileImage = Auth.updateLoginUI(profileContainer);
+        setupProfileImageListener(newProfileImage);
+        showPage("profile");
+        Auth.setupAdminPanel(); // Add this line to setup admin panel
+      }
     }
     if (event.target.classList.contains("REGISTER")) {
-      registerUser();
+      Auth.registerUser();
     }
   });
+
+  // Helper function to setup profile image click listener
+  function setupProfileImageListener(profileImage) {
+    profileImage.addEventListener("click", function () {
+      if (localStorage.getItem("loggedIn") === "true") {
+        toggleSidebar();
+      } else {
+        showPage("login");
+      }
+    });
+  }
 
   document.querySelectorAll("nav a").forEach(function(link) {
     link.addEventListener("click", function(event) {
       event.preventDefault();
       const targetSection = this.getAttribute("href").substring(1);
       showPage(targetSection);
+      if(targetSection === "products") {
+        loadProducts();
+      }
     });
   });
 
-  fetch(`${baseUrl}/getProducts.php`)
-    .then(response => response.text()) // Get raw response first (not JSON yet)
-    .then(data => {
-      console.log("Raw Response:", data); // Check what’s actually returned
-      return JSON.parse(data); // Then parse JSON
-    })
-    .then(products => {
-      console.log("Parsed Products:", products); // Check if parsing works
+  // Add escape key handler to close modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      hideProductModal();
+    }
+  });
 
-      const productContainer = document.querySelector(".products");
-
-      if (!productContainer) {
-        console.error("ERROR: .products container not found in DOM!");
-        return;
-      }
-
-      productContainer.innerHTML = "";
-
-      products.forEach(product => {
-        const productElement = document.createElement("li");
-        productElement.classList.add("product");
-        productElement.innerHTML = `
-          <img src="${product.image}" alt="${product.name}">
-          <h3>${product.name}</h3>
-          <p>${product.description}</p>
-          <p><strong>$${product.price}</strong></p>
-        `;
-        productContainer.appendChild(productElement);
-
-        productElement.addEventListener("click", function () {
-          selectedProductImage = product.image;
-          showPage("orderForm");
-        });
-      });
-
-      console.log("Products loaded successfully!");
-    })
-    .catch(error => console.error("ERROR loading products:", error));
-
+  // Initialize
+  showPage("home");
 });

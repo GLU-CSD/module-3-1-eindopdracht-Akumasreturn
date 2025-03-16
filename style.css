@@ -109,12 +109,12 @@ nav ul li a:hover {
     padding: 15px;
     width: 25vw;
     height: 350px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-rows: 150px 40px 1fr auto; 
+    gap: 8px;
+    align-items: start;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    justify-content: space-between;
     opacity: 0;
     transform: translateY(50px);
     transition: transform 0.2s ease-in-out, opacity 0.3s ease-in-out;
@@ -131,9 +131,40 @@ nav ul li a:hover {
 
 .product img {
     width: 100%;
-    height: auto;
-    max-height: 150px;
-    transition: transform 0.2s ease-in-out;
+    height: 150px;
+    object-fit: contain;
+    background: #f8f8f8;
+}
+
+.product-name {
+    font-size: 1em;
+    line-height: 1.2;
+    margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.product-description {
+    font-size: 0.85em;
+    line-height: 1.3;
+    margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.product-price {
+    margin: 0;
+    font-size: 0.95em;
+}
+
+.product .addToCart {
+    width: 100%;
+    margin: 0;
+    padding: 8px;
 }
 
 button {
@@ -195,7 +226,7 @@ footer {
     object-fit: cover;
 }
 
-/* Sideshadow styles */
+
 .sideshadowL,
 .sideshadowR {
     position: absolute;
@@ -231,12 +262,13 @@ section {
     background-color: #222;
     z-index: 10;
     transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-out;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     padding-top: 20px;
+    overflow: hidden;
 }
 
 .sidebar.open {
@@ -245,10 +277,11 @@ section {
 
 #sidebarContainer {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
     padding: 20px;
+    overflow: hidden;
 }
 
 .sidebar .profileContainer {
@@ -429,7 +462,7 @@ td {
     }
 
     .products {
-        grid-template-columns: repeat(2, 1fr); /* Change to 2 columns for phones */
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .td1 {
@@ -443,4 +476,115 @@ td {
         text-align: center;
         justify-content: center;
     }
+}
+
+
+@media screen and (max-width: 768px) {
+    .sidebar {
+        top: auto;
+        bottom: 0;
+        width: 100%;
+        height: 80vh;
+        transform: translateY(100%);
+        border-radius: 20px 20px 0 0;
+        padding-top: 10px;
+    }
+
+    .sidebar.open {
+        transform: translateY(0);
+    }
+
+    #sidebarContainer {
+        height: 100%;
+        padding-top: 30px;
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+    }
+
+    #cartList {
+        overflow-y: auto;
+        max-height: 100%;
+        padding-bottom: 20px;
+    }
+
+    #orderButton {
+        position: sticky;
+        bottom: 20px;
+        margin-top: 10px;
+    }
+
+    .sidebar .closeBtn {
+        color: white;
+        top: 10px;
+    }
+}
+
+.divider {
+    width: 90%;
+    height: 2px;
+    background-color: #444;
+    margin: 15px auto;
+}
+
+#cartList {
+    width: 100%;
+    padding: 15px;
+    color: white;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+#cartItems {
+    list-style: none;
+    padding: 0;
+}
+
+#cartItems li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+#orderButton {
+    width: 80%;
+    margin: 15px auto;
+    padding: 10px;
+    display: block;
+}
+
+.orderItem {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform 0.2s ease;
+}
+
+.closeBtn:hover {
+    transform: scale(1.2);
+    background: none;
 }

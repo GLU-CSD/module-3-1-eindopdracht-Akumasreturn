@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -14,6 +14,12 @@
             <div id="sidebar" class="sidebar">
                 <div id="sidebarContainer">
                     
+                    <hr class="divider">
+                    <div id="cartList">
+                        <h3>Shopping Cart</h3>
+                        <ul id="cartItems"></ul>
+                    </div>
+                    <button id="orderButton">Order</button>
                 </div>
             </div>
             <div class="profile logo">
@@ -76,7 +82,7 @@
         <p>View your account details.</p>
         <div>
             <p id="profileUsername"></p>
-            <div id="adminPanelLinkContainer"></div> <!-- Admin Panel Link will be added here -->
+            <div id="adminPanelLinkContainer"></div> 
             <button class="logoutBtn">Logout</button>
         </div>
     </section>
@@ -152,72 +158,7 @@
 
     <section id="orderForm">
         <div class="formcontainer">
-            <img id="selectedProductImage" src="skin.jpg" alt="Selected Product">
-            <form id="orderData" action="Startorder.php" method="post">
-                <table>
-                    <tr>
-                        <td class="td1"><label>Aanhef:</label></td>
-                        <td class="td2">
-                            <input type="radio" name="aanhef" value="Dhr." required> Dhr.
-                            <input type="radio" name="aanhef" value="Mevr." required> Mevr.
-                            <input type="radio" name="aanhef" value="Other." required> Other.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>Voornaam:</label></td>
-                        <td class="td2"><input type="text" name="voornaam" placeholder="Voornaam" required></td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>Tussenvoegsel:</label></td>
-                        <td class="td2"><input type="text" name="tussenvoegsel" placeholder="Tussenvoegsel"></td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>Achternaam:</label></td>
-                        <td class="td2"><input type="text" name="achternaam" placeholder="Achternaam" required></td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>Straatnaam:</label></td>
-                        <td class="td2"><input type="text" name="straatnaam" id="straatnaam" placeholder="Straatnaam" required></td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>Huisnummer:</label></td>
-                        <td class="td2"><input type="number" name="huisnummer" id="huisnummer" placeholder="Nr." required></td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>Postcode:</label></td>
-                        <td class="td2"><input type="text" name="postcode" id="postcode" placeholder="1234AB" required></td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>Land:</label></td>
-                        <td class="td2">
-                            <select name="land" required>
-                                <option value="NL">Nederland</option>
-                                <option value="BE">België</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>E-mailadres:</label></td>
-                        <td class="td2"><input type="email" name="email" required></td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>Telefoonnummer:</label></td>
-                        <td class="td2"><input type="tel" name="telefoon" required></td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>Geboortedatum:</label></td>
-                        <td class="td2"><input type="date" name="geboortedatum" required></td>
-                    </tr>
-                    <tr>
-                        <td class="td1"><label>Algemene voorwaarden:</label></td>
-                        <td class="td2"><input type="checkbox" name="voorwaarden" required> Ik ga akkoord met de algemene voorwaarden</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><input type="submit" value="Verder"></td>
-                    </tr>
-                </table>
-            </form>
+            <div id="orderData"></div>
         </div>
     </section>
 
@@ -225,7 +166,9 @@
         <p>&copy; 2025 PS5 Accessories Shop. All rights reserved.</p>
     </footer>
 
-    <script src="handle.js"></script>
+    <script src="auth.js" type="module"></script>
+    <script src="cart.js" type="module"></script>
+    <script src="handle.js" type="module"></script>
 
     </body>
     </html>

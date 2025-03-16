@@ -2,6 +2,5 @@ todo:
 -=load products from database  X
 -=saving profile info
 -=css   X
--=adding actual functionality
+-=adding actual functionality 
 
-X
